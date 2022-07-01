@@ -1,6 +1,6 @@
 {
-    "name": "mettle/sendportal-core",
-    "homepage": "https://github.com/mettle/sendportal-core",
+    "name": "cnr/sendportal-core",
+    "homepage": "https://github.com/khorevnikita/sendportal-core",
     "description": "Sendportal core functionality.",
     "type": "library",
     "license": "MIT",
