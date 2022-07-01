@@ -66,4 +66,11 @@ class CampaignStoreRequest extends FormRequest
             'email_service_id.required' => __('Please select an email service.'),
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        if ($url = request()->input("url_content")) {
+            $this->request->set("content", file_get_contents($url));
+        }
+    }
 }
