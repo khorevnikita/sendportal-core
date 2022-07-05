@@ -18,6 +18,6 @@ class SesWebhookReceived
     {
         $this->payload = $payload;
         $this->payloadType = $payloadType;
-        Log::info('proceed webhook');
+        //Log::info('proceed webhook');
     }
 }

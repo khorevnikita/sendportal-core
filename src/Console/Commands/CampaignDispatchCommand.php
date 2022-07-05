@@ -46,7 +46,7 @@ class CampaignDispatchCommand extends Command
             $message = 'Dispatching campaign id=' . $campaign->id;
 
             $this->info($message);
-            Log::info($message);
+            //Log::info($message);
             $count++;
 
             $this->campaignService->handle($campaign);
@@ -54,7 +54,7 @@ class CampaignDispatchCommand extends Command
 
         $message = 'Finished dispatching campaigns';
         $this->info($message);
-        Log::info($message);
+        //Log::info($message);
     }
 
     /**

@@ -19,7 +19,7 @@ class SesWebhooksController extends Controller
     {
         $payload = json_decode(request()->getContent(), true);
 
-        Log::info('SES webhook received', ['payload' => $payload]);
+        //Log::info('SES webhook received', ['payload' => $payload]);
 
         $payloadType = $payload['Type'] ?? null;
 

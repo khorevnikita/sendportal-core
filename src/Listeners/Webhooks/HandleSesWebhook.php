@@ -38,7 +38,7 @@ class HandleSesWebhook implements ShouldQueue
             return;
         }
 
-        Log::info('handle webhook');
+        //Log::info('handle webhook');
         $event = json_decode(Arr::get($event->payload, 'Message'), true);
 
         if (!$event) {
@@ -108,7 +108,7 @@ class HandleSesWebhook implements ShouldQueue
         $link = Arr::get($event, 'click.link');
         $timestamp = Carbon::parse(Arr::get($event, 'click.timestamp'));
 
-        Log::info("handle click: $link");
+        //Log::info("handle click: $link");
         $this->emailWebhookService->handleClick($messageId, $timestamp, $link);
     }
 
@@ -121,7 +121,7 @@ class HandleSesWebhook implements ShouldQueue
         // https://docs.aws.amazon.com/ses/latest/DeveloperGuide/event-publishing-retrieving-sns-examples.html#event-publishing-retrieving-sns-open
         $ipAddress = Arr::get($event, 'open.ipAddress');
         $timestamp = Carbon::parse(Arr::get($event, 'open.timestamp'));
-        Log::info("handle open: $ipAddress");
+        //Log::info("handle open: $ipAddress");
         $this->emailWebhookService->handleOpen($messageId, $timestamp, $ipAddress);
     }
 
