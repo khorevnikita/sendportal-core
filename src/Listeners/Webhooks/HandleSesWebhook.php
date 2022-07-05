@@ -41,6 +41,7 @@ class HandleSesWebhook implements ShouldQueue
         $event = json_decode(Arr::get($event->payload, 'Message'), true);
 
         if (!$event) {
+            Log::info('No message: ' . json_encode($event->payload));
             return;
         }
 
@@ -59,6 +60,7 @@ class HandleSesWebhook implements ShouldQueue
         $eventType = $event['eventType'] ?? null;
 
         if (!$eventType || !$messageId) {
+            Log::info('No type/id: ' . "$eventType / $messageId");
             return;
         }
 
@@ -66,7 +68,7 @@ class HandleSesWebhook implements ShouldQueue
 
         // https://docs.aws.amazon.com/ses/latest/DeveloperGuide/event-publishing-retrieving-sns-examples.html#event-publishing-retrieving-sns-open
         // Bounce, Complaint, Message, Send Email, Reject Event, Open Event, Click Event
-        switch (strtolower($eventType)) {
+        switch ($eventType) {
             case 'click':
                 $this->handleClick($messageId, $event);
                 break;
@@ -90,6 +92,8 @@ class HandleSesWebhook implements ShouldQueue
             case 'bounce':
                 $this->handleBounce($messageId, $event);
                 break;
+            default:
+                Log::info('Wrong type ' . "$eventType");
         }
     }
 
@@ -103,6 +107,7 @@ class HandleSesWebhook implements ShouldQueue
         $link = Arr::get($event, 'click.link');
         $timestamp = Carbon::parse(Arr::get($event, 'click.timestamp'));
 
+        Log::info("handle click: $link");
         $this->emailWebhookService->handleClick($messageId, $timestamp, $link);
     }
 
@@ -115,7 +120,7 @@ class HandleSesWebhook implements ShouldQueue
         // https://docs.aws.amazon.com/ses/latest/DeveloperGuide/event-publishing-retrieving-sns-examples.html#event-publishing-retrieving-sns-open
         $ipAddress = Arr::get($event, 'open.ipAddress');
         $timestamp = Carbon::parse(Arr::get($event, 'open.timestamp'));
-
+        Log::info("handle open: $ipAddress");
         $this->emailWebhookService->handleOpen($messageId, $timestamp, $ipAddress);
     }
 

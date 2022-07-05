@@ -15,6 +15,7 @@ use Sendportal\Base\Models\MessageFailure;
 use Sendportal\Base\Models\MessageUrl;
 use Sendportal\Base\Models\UnsubscribeEventType;
 use Sendportal\Pro\Models\AutomationSchedule;
+use Illuminate\Support\Facades\Log;
 
 class EmailWebhookService
 {
@@ -34,6 +35,7 @@ class EmailWebhookService
         $message = Message::where('message_id', $messageId)->first();
 
         if (!$message) {
+            Log::info('open no message: ' . $messageId);
             return;
         }
 
@@ -61,6 +63,7 @@ class EmailWebhookService
         $message = Message::where('message_id', $messageId)->first();
 
         if (!$message) {
+            Log::info('click no message: ' . $messageId);
             return;
         }
 
