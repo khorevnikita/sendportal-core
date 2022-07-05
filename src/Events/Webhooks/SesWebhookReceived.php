@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Sendportal\Base\Events\Webhooks;
 
+use Illuminate\Support\Facades\Log;
+
 class SesWebhookReceived
 {
     /** @var array */
@@ -16,5 +18,6 @@ class SesWebhookReceived
     {
         $this->payload = $payload;
         $this->payloadType = $payloadType;
+        Log::info('proceed webhook');
     }
 }
