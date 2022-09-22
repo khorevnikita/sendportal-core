@@ -20,7 +20,8 @@ class MailgunWebhooksController extends Controller
 
         $payload = $body['payload'] ?? [];
 
-        Log::info('Mailgun webhook received', ['payload' => $payload]);
+        Log::info('Mailgun webhook received', ['body' => $body]);
+        Log::info('Proceed payload', ['payload' => $payload]);
 
         if (\Arr::get($payload, 'event-data.event')) {
             event(new MailgunWebhookReceived($payload));
