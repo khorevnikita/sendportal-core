@@ -14,9 +14,11 @@ class MailgunWebhooksController extends Controller
     public function handle(): Response
     {
         /** @var array $payload */
-        $payload = json_decode(request()->getContent(), true);
+        $body = json_decode(request()->getContent(), true);
 
-        $payload = $this->stripAttachments($payload);
+        $body = $this->stripAttachments($body);
+
+        $payload = $body['payload'] ?? [];
 
         Log::info('Mailgun webhook received', ['payload' => $payload]);
 
