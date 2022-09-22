@@ -14,13 +14,10 @@ class MailgunWebhooksController extends Controller
     public function handle(): Response
     {
         /** @var array $payload */
-        $body = json_decode(request()->getContent(), true);
+        $payload = json_decode(request()->getContent(), true);
 
-        $body = $this->stripAttachments($body);
+        $payload = $this->stripAttachments($payload);
 
-        $payload = $body['payload'] ?? [];
-
-        Log::info('Mailgun webhook received', ['body' => $body]);
         Log::info('Proceed payload', ['payload' => $payload]);
 
         if (\Arr::get($payload, 'event-data.event')) {
