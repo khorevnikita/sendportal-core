@@ -18,7 +18,7 @@ class MailgunWebhooksController extends Controller
 
         $payload = $this->stripAttachments($payload);
 
-        Log::info('Mailgun webhook received');
+        Log::info('Mailgun webhook received', ['payload' => $payload]);
 
         if (\Arr::get($payload, 'event-data.event')) {
             event(new MailgunWebhookReceived($payload));
