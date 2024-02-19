@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Sendportal\Base\Events\SubscriberAddedEvent;
 use Sendportal\Base\Models\Subscriber;
+use Sendportal\Base\Models\Tag;
 use Sendportal\Base\Repositories\Subscribers\SubscriberTenantRepositoryInterface;
 
 class ApiSubscriberService
@@ -30,6 +31,29 @@ class ApiSubscriberService
     public function storeOrUpdate(int $workspaceId, Collection $data): Subscriber
     {
         $existingSubscriber = $this->subscribers->findBy($workspaceId, 'email', $data['email']);
+
+        if ($data->has('tags')) {
+            $tagNames = $data->get('tags');
+            $tagIds = [];
+
+            foreach ($tagNames as $tagName) {
+                if(is_numeric($tagName)) {
+                    $tag = Tag::where('id',$tagName)->where('workspace_id',$workspaceId)->first();
+                } else {
+                    $tag = Tag::where('name',$tagName)->where('workspace_id',$workspaceId)->first();
+                }
+
+                if(!$tag){
+                    $tag = new Tag();
+                    $tag->name = $tagName;
+                    $tag->workspace_id = $workspaceId;
+                    $tag->save();
+                }
+                $tagIds[] = $tag->id;
+            }
+
+            $data->put('tags', $tagIds);
+        }
 
         if (!$existingSubscriber) {
             $subscriber = $this->subscribers->store($workspaceId, $data->toArray());
