@@ -6,6 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Sendportal\Base\Console\Commands\CampaignDispatchCommand;
+use Sendportal\Base\Console\Commands\MessageDispatchCommand;
 use Sendportal\Base\Providers\EventServiceProvider;
 use Sendportal\Base\Providers\FormServiceProvider;
 use Sendportal\Base\Providers\ResolverProvider;
@@ -22,23 +23,24 @@ class SendportalBaseServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('sendportal.php'),
+                __DIR__ . '/../config/config.php' => config_path('sendportal.php'),
             ], 'sendportal-config');
 
             $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/sendportal'),
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/sendportal'),
             ], 'sendportal-views');
 
             $this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/sendportal'),
+                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/sendportal'),
             ], 'sendportal-lang');
 
             $this->publishes([
-                __DIR__.'/../public' => public_path('vendor/sendportal'),
+                __DIR__ . '/../public' => public_path('vendor/sendportal'),
             ], 'sendportal-assets');
 
             $this->commands([
                 CampaignDispatchCommand::class,
+                MessageDispatchCommand::class,
             ]);
 
             $this->app->booted(function () {
@@ -47,10 +49,10 @@ class SendportalBaseServiceProvider extends ServiceProvider
             });
         }
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'sendportal');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'sendportal');
         $this->loadJsonTranslationsFrom(resource_path('lang/vendor/sendportal'));
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'sendportal');
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'sendportal');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 
     /**
@@ -70,6 +72,6 @@ class SendportalBaseServiceProvider extends ServiceProvider
             return $app->make(Sendportal::class);
         });
 
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'sendportal');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'sendportal');
     }
 }
