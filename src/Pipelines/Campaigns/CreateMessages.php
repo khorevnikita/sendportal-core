@@ -186,8 +186,6 @@ class CreateMessages
         $message = new Message($attributes);
         $message->save();
 
-        event(new MessageDispatchEvent($message));
-
         return $message;
     }
 

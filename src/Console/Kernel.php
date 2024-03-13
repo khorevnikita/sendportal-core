@@ -5,6 +5,7 @@ namespace Sendportal\Base\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Sendportal\Base\Console\Commands\CampaignDispatchCommand;
+use Sendportal\Base\Events\MessageDispatchEvent;
 
 class Kernel extends ConsoleKernel
 {
@@ -20,12 +21,13 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(CampaignDispatchCommand::class)->everyMinute()->withoutOverlapping();
+        $schedule->command(MessageDispatchEvent::class)->everyMinute()->withoutOverlapping();
         //$schedule->command('horizon:snapshot')->everyFiveMinutes();
     }
 
@@ -36,6 +38,6 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
     }
 }
